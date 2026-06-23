@@ -57,18 +57,18 @@ function BirdBadge({ className = "", id = "logo" }: { className?: string; id?: s
 export default function Home() {
   return (
     <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-950">
-      <div className="bg-blue-900 px-4 py-2.5 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-1 text-center text-sm font-semibold sm:flex-row sm:gap-3">
-          <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-white">First Meeting</span>
-          <span>Thursday, June 25th at 7:00 PM — 3805 East Songbird Lane</span>
+      <div className="bg-blue-900 px-2 py-2 text-white sm:px-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-1.5 whitespace-nowrap text-center text-[0.68rem] font-semibold leading-none sm:gap-3 sm:text-sm">
+          <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[0.58rem] font-black uppercase tracking-[0.1em] text-white sm:px-3 sm:text-xs sm:tracking-[0.18em]">Next Meeting</span>
+          <span className="shrink-0">6/25/26 at 7 PM — 3805 E. Songbird Ln.</span>
         </div>
       </div>
 
       <nav className="sticky top-0 z-50 border-b border-blue-200 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <a href="#top" className="flex min-w-0 items-center gap-3">
-            <BirdBadge id="nav-logo" className="h-16 w-16" />
-            <span className="min-w-0 text-base font-black leading-tight text-slate-950 sm:text-lg lg:text-xl">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
+          <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <BirdBadge id="nav-logo" className="h-11 w-11 sm:h-16 sm:w-16" />
+            <span className="whitespace-nowrap text-[0.82rem] font-black leading-tight text-slate-950 sm:text-lg lg:text-xl">
               Mockingbird Hill Neighborhood Association
             </span>
           </a>
@@ -93,8 +93,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[2rem] border border-blue-900/10 bg-white/90 p-6 text-slate-950 shadow-2xl shadow-blue-950/10 backdrop-blur-md sm:p-8">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-900/15 bg-white px-3 py-0.5 text-xs font-semibold text-blue-950 shadow-sm">
-              <BirdBadge id="hero-pill-logo" className="h-8 w-8 shadow-none" />
+            <div className="mb-4 inline-flex items-center rounded-full border border-blue-900/15 bg-white px-3 py-1 text-xs font-semibold text-blue-950 shadow-sm">
               Serving neighbors since 1993
             </div>
             <h1 className="max-w-3xl text-4xl font-black leading-tight tracking-tight text-blue-950 sm:text-5xl lg:text-6xl">
