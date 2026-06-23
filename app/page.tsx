@@ -234,13 +234,9 @@ export default function Home() {
             <p className="mt-4 max-w-2xl text-sm leading-7 text-blue-100 sm:text-base">Reach out to the association, attend the next meeting, or introduce yourself at an event. The neighborhood works best when more voices are heard.</p>
           </div>
           <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {[["Email", "mhnamembers@gmail.com"], ["Meeting Place", "3805 East Songbird Lane"]].map(([label, value]) => (
-                <div key={label} className="rounded-2xl bg-white p-4 text-slate-950">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">{label}</p>
-                  <p className="mt-1 text-sm font-bold sm:text-base">{value}</p>
-                </div>
-              ))}
+            <div className="rounded-2xl bg-white p-4 text-slate-950">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">Email</p>
+              <p className="mt-1 text-sm font-bold sm:text-base">mhnamembers@gmail.com</p>
             </div>
           </div>
         </div>
