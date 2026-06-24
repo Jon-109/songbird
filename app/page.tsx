@@ -2,6 +2,7 @@ const guidelines = [
   ["Pets & Urban Critters", "Avoid leaving pet food out at night, leash dogs, and carry cleanup bags.", "01"],
   ["Yards & Trees", "Raked leaves, trimmed yards, healthy trees, and cared-for alleyways help everyone.", "02"],
   ["Trash & Lids", "Keep trash inside cans with closed lids to preserve curb appeal and discourage wildlife.", "03"],
+  ["Be a Good Neighbor", "Wave hello, keep an eye out for each other, and lend a hand when needed.", "04"],
 ];
 
 const committee = [
@@ -96,7 +97,7 @@ export default function Home() {
             <div className="mb-4 inline-flex items-center rounded-full border border-blue-900/15 bg-white px-3 py-1 text-xs font-semibold text-blue-950 shadow-sm">
               Serving neighbors since 1993
             </div>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight tracking-tight text-blue-950 sm:text-5xl lg:text-6xl">
+            <h1 className="w-full text-3xl font-black leading-tight tracking-normal text-blue-950 line-clamp-2 sm:text-5xl lg:text-6xl">
               A stronger, greener Mockingbird Hill.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-700 sm:text-lg">
@@ -146,10 +147,7 @@ export default function Home() {
               Since 1993, the Mockingbird Hill Neighborhood Association has served as a forum for ideas and concerns while responding to activities that impact quality of life. What started as neighbors gathering to share concerns has grown into a recognized voice that protects the character of our streets.
             </p>
             <p className="mb-4 leading-7">
-              Over the years, MHNA has secured real wins for the neighborhood. We prevented new apartment traffic from opening onto Mockingbird Lane, helped limit building height, and worked with CPS and city agencies to improve lighting around our streets. When a 220-condo development was proposed for Denman Estate, neighbors organized and helped turn that land into the park families enjoy today.
-            </p>
-            <p className="mb-4 leading-7">
-              We’ve also taken on smaller but important issues: securing safety signage and a radar speed advisory trailer for Mockingbird Lane, establishing responsibility for Denman pond water level maintenance, and requiring covenants tied to the property west of West Songbird as part of zoning acceptance.
+              Over the years, MHNA has secured real wins for the neighborhood. We prevented new apartment traffic from opening onto Mockingbird Lane, helped limit building height, and worked with CPS and city agencies to improve lighting. When a 220-condo development was proposed for Denman Estate, neighbors organized and helped turn that land into the park families enjoy today.
             </p>
             <p className="leading-7">
               The association continues to be a place where residents can raise concerns, share ideas, and work together to keep Mockingbird Hill a safe, welcoming place to call home.
@@ -158,18 +156,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="guidelines" className="bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+      <section id="guidelines" className="bg-slate-50 px-2 py-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 text-center">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Neighborly Notes</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Guidelines that keep blocks welcoming.</h2>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
             {guidelines.map(([title, copy, label]) => (
-              <div key={title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div key={title} className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-900 text-xs font-black text-white">{label}</div>
                 <h3 className="text-lg font-black text-slate-950">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-600">{copy}</p>
               </div>
             ))}
           </div>
@@ -185,7 +183,7 @@ export default function Home() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">2026 Executive Committee</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Neighbors serving neighbors.</h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
             {committee.map(([name, role, initials]) => (
               <div key={name} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center transition hover:border-blue-300 hover:shadow-lg">
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-900 to-emerald-700 text-sm font-black text-white">{initials}</div>
