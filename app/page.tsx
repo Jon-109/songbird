@@ -78,6 +78,7 @@ export default function Home() {
               ["About", "#about"],
               ["Guidelines", "#guidelines"],
               ["Committee", "#committee"],
+              ["Resources", "#resources"],
               ["Contact", "#contact"],
             ].map(([label, href]) => (
               <a key={href} href={href} className="text-sm font-bold text-slate-600 transition hover:text-emerald-800">
@@ -97,8 +98,8 @@ export default function Home() {
             <div className="mb-4 inline-flex items-center rounded-full border border-blue-900/15 bg-white px-3 py-1 text-xs font-semibold text-blue-950 shadow-sm">
               Serving neighbors since 1993
             </div>
-            <h1 className="w-full text-3xl font-black leading-tight tracking-normal text-blue-950 line-clamp-2 sm:text-5xl lg:text-6xl">
-              A stronger, greener Mockingbird Hill.
+            <h1 className="w-full text-3xl font-black leading-tight tracking-normal text-blue-950 sm:text-5xl lg:text-6xl">
+              Building a better Mockingbird Hill together.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-700 sm:text-lg">
               A friendly neighborhood association for sharing ideas, protecting quality of life, and keeping residents connected to meetings, events, and local concerns.
@@ -160,7 +161,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 text-center">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Neighborly Notes</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Guidelines that keep blocks welcoming.</h2>
+            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Guidelines that keep Mockingbird Hill welcoming.</h2>
           </div>
           <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
             {guidelines.map(([title, copy, label]) => (
@@ -218,6 +219,69 @@ export default function Home() {
                 </a>
                 .
               </p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-blue-200 bg-blue-50 p-6">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-800">District 8 Constituent Services</p>
+            <h3 className="mt-2 text-xl font-black text-slate-950">Isaí Fouche Rivera</h3>
+            <p className="mt-1 text-sm font-bold text-blue-900">Constituent Services Representative</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-bold text-slate-700">Phone</p>
+                <p className="text-sm text-slate-600">210-207-0943</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-700">Email</p>
+                <p className="text-sm text-slate-600">isai.foucherivera@sanantonio.gov</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources" className="bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-6 text-center">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Community Resources</p>
+            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Local contacts for neighborhood support.</h2>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-900 text-lg font-black text-white">TS</div>
+              <h3 className="text-xl font-black text-slate-950">Trez Scipio, LMSW</h3>
+              <p className="mt-1 text-sm font-bold text-blue-900">Homeless Outreach Clinical Coordinator</p>
+              <p className="mt-1 text-sm text-slate-600">City of San Antonio Homeless Services & Strategy</p>
+              <div className="mt-4 space-y-2">
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Office</p>
+                  <p className="text-sm text-slate-600">210-371-9714</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Email</p>
+                  <p className="text-sm text-slate-600">Quartrez.Scipio@sanantonio.gov</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-700 text-lg font-black text-white">HM</div>
+              <h3 className="text-xl font-black text-slate-950">Hunter McCampbell</h3>
+              <p className="mt-1 text-sm font-bold text-blue-900">Police Officer #818</p>
+              <p className="mt-1 text-sm text-slate-600">SAPD Prue SAFFE Unit — Assigned to this neighborhood</p>
+              <div className="mt-4 space-y-2">
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Office</p>
+                  <p className="text-sm text-slate-600">210-207-7169</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Cell</p>
+                  <p className="text-sm text-slate-600">210-382-9226</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Email</p>
+                  <p className="text-sm text-slate-600">Hunter.mccampbell@sanantonio.gov</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
