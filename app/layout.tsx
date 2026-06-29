@@ -15,6 +15,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mockingbird Hill Neighborhood Association",
   description: "Welcome to the Mockingbird Hill Neighborhood Association. Stay connected with community events, meetings, and news.",
+  openGraph: {
+    title: "Mockingbird Hill Neighborhood Association",
+    description: "Welcome to the Mockingbird Hill Neighborhood Association. Stay connected with community events, meetings, and news.",
+    images: [{ url: "/logo.svg" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "Mockingbird Hill Neighborhood Association",
+    description: "Welcome to the Mockingbird Hill Neighborhood Association. Stay connected with community events, meetings, and news.",
+    images: ["/logo.svg"],
+  },
 };
 
 export default function RootLayout({
