@@ -61,7 +61,7 @@ export default function Home() {
       <div className="bg-blue-900 px-2 py-2 text-white sm:px-4">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-1.5 whitespace-nowrap text-center text-[0.68rem] font-semibold leading-none sm:gap-3 sm:text-sm">
           <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[0.58rem] font-black uppercase tracking-[0.1em] text-white sm:px-3 sm:text-xs sm:tracking-[0.18em]">Next Meeting</span>
-          <span className="shrink-0">6/25/26 at 7 PM — 3805 E. Songbird Ln.</span>
+          <span className="shrink-0">8/27/26 at 7 PM — Location TBD</span>
         </div>
       </div>
 
@@ -119,8 +119,8 @@ export default function Home() {
               <BirdBadge id="hero-card-logo" className="h-24 w-24" />
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">Next Association Meeting</p>
-                <p className="mt-1 text-2xl font-black text-slate-950">June 25 at 7:00 PM</p>
-                <p className="mt-1 text-sm font-bold text-slate-600">3805 East Songbird Lane</p>
+                <p className="mt-1 text-2xl font-black text-slate-950">August 27 at 7:00 PM</p>
+                <p className="mt-1 text-sm font-bold text-slate-600">Location TBD</p>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
