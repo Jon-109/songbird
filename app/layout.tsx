@@ -18,6 +18,17 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    title: "Mockingbird Hill Neighborhood Association",
+    description: "Welcome to the Mockingbird Hill Neighborhood Association. Stay connected with community events, meetings, and news.",
+    images: ["/opengraph-image"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mockingbird Hill Neighborhood Association",
+    description: "Welcome to the Mockingbird Hill Neighborhood Association. Stay connected with community events, meetings, and news.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RootLayout({
