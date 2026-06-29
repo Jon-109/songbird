@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <circle cx="120" cy="120" r="114" fill="white" />
+  <circle cx="120" cy="120" r="108" fill="none" stroke="black" stroke-width="11" />
+  <circle cx="120" cy="120" r="94" fill="none" stroke="black" stroke-width="3" />
+  <circle cx="120" cy="120" r="61" fill="none" stroke="black" stroke-width="5" />
+  <circle cx="120" cy="120" r="53" fill="black" />
+  <text
+    x="120"
+    y="134"
+    fill="white"
+    font-family="Arial Narrow, Arial, Helvetica, sans-serif"
+    font-size="40"
+    font-weight="800"
+    letter-spacing="-3"
+    text-anchor="middle"
+  >
+    MHNA
+  </text>
+</svg>
