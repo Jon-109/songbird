@@ -61,7 +61,7 @@ export default function Home() {
       <div className="bg-blue-900 px-2 py-2 text-white sm:px-4">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-1.5 whitespace-nowrap text-center text-[0.68rem] font-semibold leading-none sm:gap-3 sm:text-sm">
           <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[0.58rem] font-black uppercase tracking-[0.1em] text-white sm:px-3 sm:text-xs sm:tracking-[0.18em]">Next Meeting</span>
-          <span className="shrink-0">8/27/26 at 7 PM — Location TBD</span>
+          <span className="shrink-0">National Night Out — October 6, 2026 — Time & place TBA</span>
         </div>
       </div>
 
@@ -118,15 +118,15 @@ export default function Home() {
             <div className="mb-4 flex items-center gap-4 border-b border-slate-100 pb-4">
               <BirdBadge id="hero-card-logo" className="h-24 w-24" />
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">Next Association Meeting</p>
-                <p className="mt-1 text-2xl font-black text-slate-950">August 27 at 7:00 PM</p>
-                <p className="mt-1 text-sm font-bold text-slate-600">Location TBD</p>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">National Night Out — San Antonio Neighbors Together</p>
+                <p className="mt-1 text-2xl font-black text-slate-950">October 6, 2026</p>
+                <p className="mt-1 text-sm font-bold text-slate-600">Time & place TBA</p>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl bg-blue-100 p-4">
                 <p className="text-sm font-black text-blue-900">What to expect</p>
-                <p className="mt-1 text-sm leading-6 text-slate-600">Neighborhood updates, concerns, ideas, and 2026 planning.</p>
+                <p className="mt-1 text-sm leading-6 text-slate-600">A neighborhood gathering with food, drink, talk, and fun.</p>
               </div>
               <div className="rounded-2xl bg-emerald-200 p-4">
                 <p className="text-sm font-black text-emerald-950">Who should attend</p>
