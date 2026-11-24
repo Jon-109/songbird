@@ -1,8 +1,74 @@
+import { readdirSync } from "fs";
+import path from "path";
+import { PhotoCarousel, type CarouselPhoto } from "@/components/photo-carousel";
+import { BirdBadge } from "@/components/bird-badge";
+import { SiteNav } from "@/components/site-nav";
+import { Reveal } from "@/components/reveal";
+import { BackToTop } from "@/components/back-to-top";
+
+const focalOverrides: Record<string, string> = {
+  "IMG_1128.jpg": "50% 15%",
+};
+
+function getPhotos(): CarouselPhoto[] {
+  let files: string[];
+  try {
+    files = readdirSync(path.join(process.cwd(), "public", "photos"));
+  } catch {
+    return [];
+  }
+  return files
+    .filter((file) => /\.(jpe?g|png|webp|avif)$/i.test(file) && !file.startsWith("."))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+    .map((file, index) => ({
+      src: `/photos/${file}`,
+      alt: `Mockingbird Hill community photo ${index + 1}`,
+      objectPosition: focalOverrides[file],
+    }));
+}
+
+const milestones = [
+  {
+    year: "Est. 1993",
+    title: "Three decades of neighbor advocacy",
+    body: "Grown from informal living-room gatherings into a recognized District 8 neighborhood voice.",
+    accent: "bg-blue-950 text-white",
+  },
+  {
+    year: "Denman Park",
+    title: "220-condo plan turned into parkland",
+    body: "Organized neighbors helped preserve Denman Estate as the public park families enjoy today.",
+    accent: "bg-emerald-700 text-white",
+  },
+  {
+    year: "Street Character",
+    title: "Traffic, height & lighting protections",
+    body: "Blocked cut-through apartment traffic on Mockingbird Lane, capped building heights, and upgraded street lighting.",
+    accent: "bg-slate-800 text-white",
+  },
+];
+
 const guidelines = [
-  ["Pets & Urban Critters", "Avoid leaving pet food out at night, leash dogs, and carry cleanup bags.", "01"],
-  ["Yards & Trees", "Raked leaves, trimmed yards, healthy trees, and cared-for alleyways help everyone.", "02"],
-  ["Trash & Lids", "Keep trash inside cans with closed lids to preserve curb appeal and discourage wildlife.", "03"],
-  ["Be a Good Neighbor", "Wave hello, keep an eye out for each other, and lend a hand when needed.", "04"],
+  {
+    label: "01",
+    title: "Pets & Urban Critters",
+    copy: "Avoid leaving pet food out overnight, keep dogs leashed on walks, and carry cleanup bags.",
+  },
+  {
+    label: "02",
+    title: "Yards & Trees",
+    copy: "Raked leaves, trimmed lawns, healthy mature trees, and clear alleyways keep every block inviting.",
+  },
+  {
+    label: "03",
+    title: "Trash & Lids",
+    copy: "Keep trash secured inside bins with closed lids to preserve curb appeal and discourage wildlife.",
+  },
+  {
+    label: "04",
+    title: "Be a Good Neighbor",
+    copy: "Wave hello on the street, look out for one another, and lend a hand whenever a neighbor needs it.",
+  },
 ];
 
 const committee = [
@@ -10,308 +76,548 @@ const committee = [
   ["Warren Young", "Vice President", "WY"],
   ["Victoria Valerga", "Secretary", "VV"],
   ["Rosantina Aranda", "Treasurer", "RA"],
-];
+] as const;
 
-function BirdBadge({ className = "", id = "logo" }: { className?: string; id?: string }) {
+const cardLift =
+  "transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-950/5";
+
+function SectionHeader({
+  eyebrow,
+  title,
+  subtitle,
+  align = "left",
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  align?: "left" | "center";
+}) {
+  const centered = align === "center";
   return (
-    <svg
-      className={`inline-block h-16 w-16 shrink-0 ${className}`}
-      viewBox="0 0 240 240"
-      role="img"
-      aria-label="Mockingbird Hill Neighborhood Association logo"
-    >
-      <defs>
-        <path id={`${id}-topLogoArc`} d="M 48 120 A 72 72 0 0 1 192 120" />
-        <path id={`${id}-bottomLogoArc`} d="M 192 120 A 72 72 0 0 1 48 120" />
-      </defs>
-      <circle cx="120" cy="120" r="114" fill="white" />
-      <circle cx="120" cy="120" r="108" fill="none" stroke="black" strokeWidth="11" />
-      <circle cx="120" cy="120" r="94" fill="none" stroke="black" strokeWidth="3" />
-      <circle cx="120" cy="120" r="61" fill="none" stroke="black" strokeWidth="5" />
-      <circle cx="120" cy="120" r="53" fill="black" />
-      <text fill="black" fontFamily="Arial, Helvetica, sans-serif" fontSize="12.5" fontWeight="700" letterSpacing="4.2">
-        <textPath href={`#${id}-topLogoArc`} startOffset="50%" textAnchor="middle">
-          MOCKINGBIRD HILL
-        </textPath>
-      </text>
-      <text fill="black" fontFamily="Arial, Helvetica, sans-serif" fontSize="11" fontWeight="700" letterSpacing="2.15">
-        <textPath href={`#${id}-bottomLogoArc`} startOffset="50%" textAnchor="middle">
-          NEIGHBORHOOD ASSOCIATION
-        </textPath>
-      </text>
-      <text
-        x="120"
-        y="134"
-        fill="white"
-        fontFamily="Arial Narrow, Arial, Helvetica, sans-serif"
-        fontSize="40"
-        fontWeight="800"
-        letterSpacing="-3"
-        textAnchor="middle"
-      >
-        MHNA
-      </text>
-    </svg>
+    <Reveal className={`mb-5 w-full ${centered ? "text-center" : ""}`}>
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-emerald-800">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+        {eyebrow}
+      </span>
+      <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-[1.75rem] lg:whitespace-nowrap lg:text-[1.95rem]">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="mt-1 text-sm leading-6 text-slate-600 sm:text-[0.95rem] lg:whitespace-nowrap">
+          {subtitle}
+        </p>
+      )}
+    </Reveal>
   );
 }
 
 export default function Home() {
+  const photos = getPhotos();
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-950">
-      <div className="bg-blue-900 px-2 py-2 text-white sm:px-4">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-1.5 whitespace-nowrap text-center text-[0.68rem] font-semibold leading-none sm:gap-3 sm:text-sm">
-          <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[0.58rem] font-black uppercase tracking-[0.1em] text-white sm:px-3 sm:text-xs sm:tracking-[0.18em]">Next Meeting</span>
-          <span className="shrink-0">National Night Out — October 6, 2026 — Time & place TBA</span>
+    <main className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-950">
+      {/* Slim Top Announcement Banner */}
+      <div className="bg-blue-950 px-3 py-1.5 text-white sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-center text-[0.72rem] font-medium leading-tight sm:text-xs">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2 py-0.5 text-[0.6rem] font-extrabold uppercase tracking-[0.15em] text-white">
+            Save the Date
+          </span>
+          <span className="font-semibold text-white">
+            Next Meeting: MHNA Christmas Party — December 5, 2026
+          </span>
+          <span className="hidden text-blue-300 sm:inline">•</span>
+          <span className="text-blue-200">More details to follow</span>
         </div>
       </div>
 
-      <nav className="sticky top-0 z-50 border-b border-blue-200 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
-          <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
-            <BirdBadge id="nav-logo" className="h-11 w-11 sm:h-16 sm:w-16" />
-            <span className="whitespace-nowrap text-[0.82rem] font-black leading-tight text-slate-950 sm:text-lg lg:text-xl">
-              Mockingbird Hill Neighborhood Association
-            </span>
-          </a>
-          <div className="hidden items-center gap-5 lg:flex">
-            {[
-              ["About", "#about"],
-              ["Guidelines", "#guidelines"],
-              ["Committee", "#committee"],
-              ["Resources", "#resources"],
-              ["Contact", "#contact"],
-            ].map(([label, href]) => (
-              <a key={href} href={href} className="text-sm font-bold text-slate-600 transition hover:text-emerald-800">
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </nav>
+      <SiteNav />
 
-      <section id="top" className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-        <div style={{ backgroundImage: "url('https://files.123freevectors.com/wp-content/original/springtime-birds-blossoms-blue-and-cream-173882513.png')", backgroundSize: "340px" }} className="absolute inset-0 bg-repeat opacity-100" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/75 via-white/45 to-white/15" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[2rem] border border-blue-900/10 bg-white/90 p-6 text-slate-950 shadow-2xl shadow-blue-950/10 backdrop-blur-md sm:p-8">
-            <div className="mb-4 inline-flex items-center rounded-full border border-blue-900/15 bg-white px-3 py-1 text-xs font-semibold text-blue-950 shadow-sm">
-              Serving neighbors since 1993
+      {/* Hero Section — Top-aligned, Clean Soft Gradient (No Lines) */}
+      <section
+        id="top"
+        className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-br from-sky-50/90 via-white to-emerald-50/75 px-4 pb-8 pt-5 sm:px-6 sm:pb-9 sm:pt-6 lg:px-8"
+      >
+        <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-200/35 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-emerald-200/35 blur-3xl" />
+
+        <div className="relative z-10 mx-auto max-w-7xl">
+          {/* Full-width Header directly below nav */}
+          <div className="mb-5">
+            <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-blue-900/12 bg-white/90 px-3 py-1 text-xs font-semibold text-blue-950 shadow-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+              Serving San Antonio’s District 8 Neighbors Since 1993
             </div>
-            <h1 className="w-full text-3xl font-black leading-tight tracking-normal text-blue-950 sm:text-5xl lg:text-6xl">
-              Building a better Mockingbird Hill together.
+            <h1 className="w-full text-[clamp(1.85rem,3.95vw,3.2rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-blue-950 lg:whitespace-nowrap">
+              Building a better Mockingbird Hill{" "}
+              <span className="font-display font-normal italic text-emerald-700">
+                together.
+              </span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-700 sm:text-lg">
-              A friendly neighborhood association for sharing ideas, protecting quality of life, and keeping residents connected to meetings, events, and local concerns.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <a href="#about" className="rounded-full bg-emerald-700 px-6 py-3 text-center text-sm font-black text-white shadow-lg shadow-emerald-950/20 transition hover:bg-emerald-600">
-                Learn About MHNA
-              </a>
-              <a href="#contact" className="rounded-full border border-blue-950/20 bg-white px-6 py-3 text-center text-sm font-black text-blue-950 transition hover:bg-blue-50">
-                Get in Touch
-              </a>
-            </div>
           </div>
 
-          <div className="relative z-10 rounded-[1.75rem] border border-blue-900/10 bg-white/95 p-5 text-slate-950 shadow-2xl shadow-blue-950/20 backdrop-blur-lg">
-            <div className="mb-4 flex items-center gap-4 border-b border-slate-100 pb-4">
-              <BirdBadge id="hero-card-logo" className="h-24 w-24" />
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">National Night Out — San Antonio Neighbors Together</p>
-                <p className="mt-1 text-2xl font-black text-slate-950">October 6, 2026</p>
-                <p className="mt-1 text-sm font-bold text-slate-600">Time & place TBA</p>
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl bg-blue-100 p-4">
-                <p className="text-sm font-black text-blue-900">What to expect</p>
-                <p className="mt-1 text-sm leading-6 text-slate-600">A neighborhood gathering with food, drink, talk, and fun.</p>
-              </div>
-              <div className="rounded-2xl bg-emerald-200 p-4">
-                <p className="text-sm font-black text-emerald-950">Who should attend</p>
-                <p className="mt-1 text-sm leading-6 text-slate-600">Residents who want to stay informed and get involved.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          {/* Top-Aligned Two-Column Row: Compact Left Card | Compact Right Event Card */}
+          <div className="grid items-start gap-5 lg:grid-cols-[1.08fr_0.92fr] lg:gap-6">
+            {/* Left Column Box: 3-line max subheader + inline stats + CTAs */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-md shadow-blue-950/5 sm:p-6">
+              <p className="text-sm leading-6 text-slate-600 sm:text-[0.95rem] sm:leading-[1.6rem]">
+                Mockingbird Hill Neighborhood Association brings neighbors together to share ideas, protect the character of our tree-lined streets, and stay connected to meetings, seasonal events, and District 8 updates.
+              </p>
 
-      <section id="about" className="bg-white px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Our Story</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">A collective voice with results.</h2>
-          </div>
-          <div className="prose prose-lg max-w-none text-slate-700">
-            <p className="mb-4 leading-7">
-              Since 1993, the Mockingbird Hill Neighborhood Association has served as a forum for ideas and concerns while responding to activities that impact quality of life. What started as neighbors gathering to share concerns has grown into a recognized voice that protects the character of our streets.
-            </p>
-            <p className="mb-4 leading-7">
-              Over the years, MHNA has secured real wins for the neighborhood. We prevented new apartment traffic from opening onto Mockingbird Lane, helped limit building height, and worked with CPS and city agencies to improve lighting. When a 220-condo development was proposed for Denman Estate, neighbors organized and helped turn that land into the park families enjoy today.
-            </p>
-            <p className="leading-7">
-              The association continues to be a place where residents can raise concerns, share ideas, and work together to keep Mockingbird Hill a safe, welcoming place to call home.
-            </p>
-          </div>
-        </div>
-      </section>
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-y border-slate-100 py-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-800">
+                  <span className="text-blue-900">Est. 1993</span> · 30+ Years Active
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-900">
+                  District 8 · San Antonio
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-900">
+                  100% Neighbor-Led
+                </span>
+              </div>
 
-      <section id="guidelines" className="bg-slate-50 px-2 py-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6 text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Neighborly Notes</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Guidelines that keep Mockingbird Hill welcoming.</h2>
-          </div>
-          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
-            {guidelines.map(([title, copy, label]) => (
-              <div key={title} className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-900 text-xs font-black text-white">{label}</div>
-                <h3 className="text-lg font-black text-slate-950">{title}</h3>
-                <p className="mt-2 text-xs leading-5 text-slate-600">{copy}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 rounded-2xl border border-emerald-400 bg-emerald-200 p-4 text-center text-sm font-bold leading-6 text-emerald-950">
-            Contact an MHNA Executive Committee member with concerns or inquiries.
-          </div>
-        </div>
-      </section>
-
-      <section id="committee" className="bg-white px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6 text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">2026 Executive Committee</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Neighbors serving neighbors.</h2>
-          </div>
-          <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
-            {committee.map(([name, role, initials]) => (
-              <div key={name} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center transition hover:border-blue-300 hover:shadow-lg">
-                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-900 to-emerald-700 text-sm font-black text-white">{initials}</div>
-                <h3 className="font-black text-slate-950">{name}</h3>
-                <p className="mt-1 text-sm font-bold text-blue-900">{role}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">District 8 Councilmember</p>
-            <h3 className="mt-2 text-2xl font-black text-slate-950">Ivalis Meza Gonzalez</h3>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div>
-                <p className="text-sm font-bold text-slate-700">Downtown Office</p>
-                <p className="mt-1 text-sm text-slate-600">City Hall, 100 Military Plaza</p>
-                <p className="text-sm text-slate-600">San Antonio, TX 78205</p>
-                <p className="mt-1 text-sm font-bold text-blue-900">210-207-7086</p>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-700">Constituent Office</p>
-                <p className="mt-1 text-sm text-slate-600">8431 Fredericksburg Rd., Suite 114</p>
-                <p className="text-sm text-slate-600">San Antonio, TX 78229</p>
-                <p className="mt-1 text-sm font-bold text-blue-900">210-207-0943</p>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-emerald-200">
-              <p className="text-sm text-slate-600">
-                Contact form and additional resources available at the{" "}
-                <a href="https://www.sa.gov/Directory/Departments/Mayor-Council/City-Council/D8" className="font-bold text-blue-900 underline hover:text-emerald-800" target="_blank" rel="noopener noreferrer">
-                  City of San Antonio District 8 page
+              <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                <a
+                  href="#about"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-600"
+                >
+                  <span>Explore Our Story</span>
+                  <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
                 </a>
-                .
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50"
+                >
+                  Get in Touch
+                </a>
+                {photos.length > 0 && (
+                  <a
+                    href="#photos"
+                    className="inline-flex items-center justify-center px-2.5 py-2 text-sm font-bold text-blue-900 underline decoration-blue-900/35 underline-offset-4 transition hover:text-emerald-800"
+                  >
+                    See Community Photos
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Right Column Box: Upcoming Christmas Party Card (No Empty Space) */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-md shadow-blue-950/5 sm:p-6">
+              <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <BirdBadge id="hero-card-logo" className="h-12 w-12" />
+                  <div className="min-w-0">
+                    <span className="inline-block rounded-full bg-red-50 px-2.5 py-0.5 text-[0.64rem] font-extrabold uppercase tracking-[0.15em] text-red-700 ring-1 ring-red-200">
+                      Next Meeting · Save the Date
+                    </span>
+                    <h2 className="mt-1 truncate text-lg font-extrabold tracking-tight text-slate-950 sm:text-xl">
+                      MHNA Christmas Party
+                    </h2>
+                    <p className="text-xs font-semibold text-slate-600 sm:text-sm">
+                      Saturday, December 5, 2026 · More details to follow
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden shrink-0 flex-col items-center justify-center rounded-xl border border-red-100 bg-red-50/80 px-3 py-1.5 text-center sm:flex">
+                  <span className="text-[0.62rem] font-extrabold uppercase tracking-widest text-red-700">Dec</span>
+                  <span className="text-xl font-black leading-none text-slate-950">05</span>
+                </div>
+              </div>
+
+              <div className="mt-3.5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-blue-100 bg-blue-50/75 p-3.5">
+                  <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.13em] text-blue-900">
+                    What to expect
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-slate-700 sm:text-sm">
+                    A festive holiday celebration with food, drinks, and good company.
+                  </p>
+                </div>
+                <div className="rounded-xl border border-emerald-200/80 bg-emerald-50/85 p-3.5">
+                  <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.13em] text-emerald-900">
+                    Who should attend
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-slate-700 sm:text-sm">
+                    All Mockingbird Hill residents — meet neighbors and stay informed.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Story — Structured Bento Grid */}
+      <section id="about" className="bg-dot-slate border-b border-slate-200/80 bg-slate-50 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Our Story"
+            title="A collective neighborhood voice with real results."
+            subtitle="For over thirty years, neighbors working side by side have shaped Mockingbird Hill into one of District 8’s most cared-for communities."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-[1.28fr_0.92fr] lg:gap-5">
+            <Reveal className="h-full">
+              <div className="flex h-full flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-6">
+                <div className="space-y-3 text-sm leading-6 text-slate-700 sm:text-[0.95rem] sm:leading-7">
+                  <p className="font-semibold text-slate-900">
+                    Since 1993, the Mockingbird Hill Neighborhood Association has served as a welcoming forum for resident ideas and local concerns while responding thoughtfully to changes affecting quality of life.
+                  </p>
+                  <p>
+                    Over the years, MHNA has secured lasting wins for our streets. Neighbors organized to prevent cut-through apartment traffic from opening onto Mockingbird Lane, helped cap nearby building heights, and partnered with CPS Energy and city departments to improve neighborhood lighting.
+                  </p>
+                  <p>
+                    When a 220-unit condo complex was proposed for the historic Denman Estate, residents rallied together and helped preserve that land as the public park families enjoy across San Antonio today.
+                  </p>
+                </div>
+
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                  <p className="text-xs font-semibold text-slate-700 sm:text-sm">
+                    Every resident voice makes our association stronger.
+                  </p>
+                  <a
+                    href="#committee"
+                    className="text-xs font-bold text-blue-900 underline decoration-blue-900/30 underline-offset-4 transition hover:text-emerald-800 sm:text-sm"
+                  >
+                    Meet the 2026 Committee →
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-3">
+              {milestones.map((item, idx) => (
+                <Reveal key={item.year} delay={idx * 60}>
+                  <div className={`rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs sm:p-5 ${cardLift}`}>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <span className={`rounded-full px-2.5 py-0.5 text-[0.7rem] font-extrabold tracking-wide ${item.accent}`}>
+                        {item.year}
+                      </span>
+                      <h3 className="text-sm font-extrabold text-slate-950 sm:text-base">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">{item.body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Neighborly Notes / Guidelines */}
+      <section id="guidelines" className="border-b border-slate-200/80 bg-white px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Neighborly Notes"
+            title="Everyday habits that keep Mockingbird Hill welcoming."
+            align="center"
+          />
+
+          <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+            {guidelines.map((item, i) => (
+              <Reveal key={item.title} delay={i * 55} className="h-full">
+                <div className={`flex h-full flex-col rounded-2xl border border-slate-200/90 bg-slate-50/70 p-4 shadow-xs ${cardLift} hover:bg-white`}>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-950 text-xs font-extrabold tracking-wider text-white">
+                      {item.label}
+                    </div>
+                    <h3 className="text-sm font-extrabold leading-snug text-slate-950 sm:text-base">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2.5 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">{item.copy}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="mt-4">
+            <div className="flex flex-col items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/90 px-5 py-3 text-center sm:flex-row sm:text-left">
+              <p className="text-xs font-semibold text-emerald-950 sm:text-sm">
+                Have a neighborhood question, suggestion, or concern? Reach out to an MHNA Executive Committee member anytime.
+              </p>
+              <a
+                href="#contact"
+                className="shrink-0 rounded-full bg-emerald-800 px-4 py-1.5 text-xs font-bold text-white transition hover:bg-emerald-700"
+              >
+                Email MHNA
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Executive Committee & District 8 */}
+      <section id="committee" className="border-b border-slate-200/80 bg-slate-50 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="2026 Leadership"
+            title="Neighbors serving neighbors."
+            subtitle="Volunteer officers elected by residents, alongside our City of San Antonio District 8 representatives."
+            align="center"
+          />
+
+          <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+            {committee.map(([name, role, initials], i) => (
+              <Reveal key={name} delay={i * 55} className="h-full">
+                <div className={`flex h-full items-center gap-3.5 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs ${cardLift}`}>
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-950 to-emerald-700 text-xs font-extrabold text-white shadow-xs">
+                    {initials}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="truncate text-sm font-extrabold text-slate-950 sm:text-base">{name}</h3>
+                    <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-emerald-800">
+                      {role}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <Reveal className="h-full">
+              <div className={`flex h-full flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs ${cardLift}`}>
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-lg font-extrabold text-slate-950">Ivalis Meza Gonzalez</h3>
+                    <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[0.65rem] font-extrabold uppercase tracking-[0.16em] text-emerald-800 ring-1 ring-emerald-200">
+                      District 8 Councilmember
+                    </span>
+                  </div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-xl bg-slate-50 p-3.5">
+                      <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Downtown Office</p>
+                      <p className="mt-0.5 text-xs font-medium text-slate-700 sm:text-sm">City Hall, 100 Military Plaza, SATX 78205</p>
+                      <a href="tel:210-207-7086" className="mt-1 inline-block text-xs font-bold text-blue-900 hover:underline sm:text-sm">
+                        210-207-7086
+                      </a>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-3.5">
+                      <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Constituent Office</p>
+                      <p className="mt-0.5 text-xs font-medium text-slate-700 sm:text-sm">8431 Fredericksburg Rd., Ste 114, SATX 78229</p>
+                      <a href="tel:210-207-0943" className="mt-1 inline-block text-xs font-bold text-blue-900 hover:underline sm:text-sm">
+                        210-207-0943
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3.5 border-t border-slate-100 pt-3">
+                  <p className="text-xs text-slate-600 sm:text-sm">
+                    Contact forms and city updates on the{" "}
+                    <a
+                      href="https://www.sa.gov/Directory/Departments/Mayor-Council/City-Council/D8"
+                      className="font-bold text-blue-900 underline decoration-blue-900/30 underline-offset-4 hover:text-emerald-800"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      City of San Antonio District 8 page ↗
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal className="h-full" delay={65}>
+              <div className={`flex h-full flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs ${cardLift}`}>
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <h3 className="text-lg font-extrabold text-slate-950">Isaí Fouche Rivera</h3>
+                      <p className="text-xs font-semibold text-slate-600">Constituent Services Representative</p>
+                    </div>
+                    <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[0.65rem] font-extrabold uppercase tracking-[0.16em] text-blue-900 ring-1 ring-blue-200">
+                      District 8 Services
+                    </span>
+                  </div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-xl bg-slate-50 p-3.5">
+                      <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Direct Phone</p>
+                      <a href="tel:210-207-0943" className="mt-1 inline-block text-xs font-bold text-blue-900 hover:underline sm:text-sm">
+                        210-207-0943
+                      </a>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-3.5">
+                      <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Email</p>
+                      <a
+                        href="mailto:isai.foucherivera@sanantonio.gov"
+                        className="mt-1 inline-block break-all text-xs font-bold text-blue-900 hover:underline sm:text-sm"
+                      >
+                        isai.foucherivera@sanantonio.gov
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-3.5 border-t border-slate-100 pt-3 text-xs text-slate-600 sm:text-sm">
+                  Reach out for city service requests, street maintenance, lighting, or code inquiries in Mockingbird Hill.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Community Photos Carousel */}
+      {photos.length > 0 && (
+        <section id="photos" className="border-b border-slate-200/80 bg-white px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeader
+              eyebrow="Community Gallery"
+              title="Mockingbird Hill in action."
+              subtitle="Snapshots from recent neighborhood meetings, speakers, and community gatherings."
+            />
+            <Reveal>
+              <div className="rounded-2xl border border-slate-200/90 bg-slate-50/80 p-4 shadow-xs sm:p-5">
+                <PhotoCarousel photos={photos} />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Community Resources */}
+      <section
+        id="resources"
+        className="bg-dot-slate border-b border-slate-200/80 bg-slate-50 px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      >
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Community Resources"
+            title="Direct contacts for neighborhood support."
+            subtitle="Dedicated San Antonio outreach and safety officers assigned to our area."
+            align="center"
+          />
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Reveal className="h-full">
+              <div className={`flex h-full flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs ${cardLift}`}>
+                <div className="flex items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-950 text-sm font-extrabold text-white shadow-xs">
+                    TS
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-base font-extrabold leading-tight text-slate-950 sm:text-lg">
+                      Trez Scipio, LMSW
+                    </h3>
+                    <p className="text-xs font-bold text-blue-900 sm:text-sm">
+                      Homeless Outreach Clinical Coordinator · COSA Homeless Services
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 grid gap-3 border-t border-slate-100 pt-3.5 sm:grid-cols-2">
+                  <div className="rounded-xl bg-slate-50 p-3">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Office</p>
+                    <a href="tel:210-371-9714" className="mt-0.5 inline-block text-xs font-bold text-slate-900 hover:text-blue-900 hover:underline sm:text-sm">
+                      210-371-9714
+                    </a>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 p-3">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Email</p>
+                    <a href="mailto:Quartrez.Scipio@sanantonio.gov" className="mt-0.5 inline-block break-all text-xs font-bold text-slate-900 hover:text-blue-900 hover:underline sm:text-sm">
+                      Quartrez.Scipio@sanantonio.gov
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal className="h-full" delay={65}>
+              <div className={`flex h-full flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs ${cardLift}`}>
+                <div className="flex items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-800 text-sm font-extrabold text-white shadow-xs">
+                    HM
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-base font-extrabold leading-tight text-slate-950 sm:text-lg">
+                      Hunter McCampbell
+                    </h3>
+                    <p className="text-xs font-bold text-emerald-800 sm:text-sm">
+                      SAPD Officer #818 · Prue SAFFE Unit (Assigned to Mockingbird Hill)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 grid gap-3 border-t border-slate-100 pt-3.5 sm:grid-cols-3">
+                  <div className="rounded-xl bg-slate-50 p-3">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Office</p>
+                    <a href="tel:210-207-7169" className="mt-0.5 inline-block text-xs font-bold text-slate-900 hover:text-blue-900 hover:underline sm:text-sm">
+                      210-207-7169
+                    </a>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 p-3">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Cell</p>
+                    <a href="tel:210-382-9226" className="mt-0.5 inline-block text-xs font-bold text-slate-900 hover:text-blue-900 hover:underline sm:text-sm">
+                      210-382-9226
+                    </a>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 p-3">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-wider text-slate-500">Email</p>
+                    <a href="mailto:Hunter.mccampbell@sanantonio.gov" className="mt-0.5 inline-block break-all text-xs font-bold text-slate-900 hover:text-blue-900 hover:underline">
+                      Hunter.mccampbell@sanantonio.gov
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Get Connected CTA — Clean Soft Gradient Matching Hero (No Grid Lines) */}
+      <section
+        id="contact"
+        className="relative overflow-hidden bg-gradient-to-br from-sky-50/90 via-white to-emerald-50/80 px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      >
+        <Reveal className="relative z-10 mx-auto max-w-7xl">
+          <div className="grid gap-5 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-md shadow-blue-950/5 sm:p-7 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-emerald-800">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                Get Connected
+              </span>
+              <h2 className="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl lg:whitespace-nowrap">
+                Have a concern, idea, or new neighbor to welcome?
+              </h2>
+              <p className="mt-1.5 text-sm leading-6 text-slate-600 sm:text-[0.95rem]">
+                Reach out to the association, join us December 5th for the Christmas Party, or say hello at an upcoming meeting.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 p-4 sm:p-5">
+              <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.18em] text-emerald-900">
+                Association Email
+              </p>
+              <a
+                href="mailto:mhnamembers@gmail.com"
+                className="mt-1 inline-block text-base font-extrabold text-blue-950 underline decoration-emerald-600 decoration-2 underline-offset-4 transition hover:text-emerald-800 sm:text-lg"
+              >
+                mhnamembers@gmail.com
+              </a>
+              <p className="mt-1 text-xs font-medium text-slate-600">
+                Monitored by MHNA Executive Committee volunteers
               </p>
             </div>
           </div>
-
-          <div className="mt-6 rounded-3xl border border-blue-200 bg-blue-50 p-6">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-800">District 8 Constituent Services</p>
-            <h3 className="mt-2 text-xl font-black text-slate-950">Isaí Fouche Rivera</h3>
-            <p className="mt-1 text-sm font-bold text-blue-900">Constituent Services Representative</p>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              <div>
-                <p className="text-xs font-bold text-slate-700">Phone</p>
-                <p className="text-sm text-slate-600">210-207-0943</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-700">Email</p>
-                <p className="text-sm text-slate-600">isai.foucherivera@sanantonio.gov</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section id="resources" className="bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6 text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-800">Community Resources</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Local contacts for neighborhood support.</h2>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-900 text-lg font-black text-white">TS</div>
-              <h3 className="text-xl font-black text-slate-950">Trez Scipio, LMSW</h3>
-              <p className="mt-1 text-sm font-bold text-blue-900">Homeless Outreach Clinical Coordinator</p>
-              <p className="mt-1 text-sm text-slate-600">City of San Antonio Homeless Services & Strategy</p>
-              <div className="mt-4 space-y-2">
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Office</p>
-                  <p className="text-sm text-slate-600">210-371-9714</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Email</p>
-                  <p className="text-sm text-slate-600">Quartrez.Scipio@sanantonio.gov</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-700 text-lg font-black text-white">HM</div>
-              <h3 className="text-xl font-black text-slate-950">Hunter McCampbell</h3>
-              <p className="mt-1 text-sm font-bold text-blue-900">Police Officer #818</p>
-              <p className="mt-1 text-sm text-slate-600">SAPD Prue SAFFE Unit — Assigned to this neighborhood</p>
-              <div className="mt-4 space-y-2">
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Office</p>
-                  <p className="text-sm text-slate-600">210-207-7169</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Cell</p>
-                  <p className="text-sm text-slate-600">210-382-9226</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-700">Email</p>
-                  <p className="text-sm text-slate-600">Hunter.mccampbell@sanantonio.gov</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-950 px-4 py-12 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-400">Get Connected</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Have a concern, idea, or neighbor to welcome?</h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-blue-100 sm:text-base">Reach out to the association, attend the next meeting, or introduce yourself at an event. The neighborhood works best when more voices are heard.</p>
-          </div>
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur">
-            <div className="rounded-2xl bg-white p-4 text-slate-950">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-900">Email</p>
-              <p className="mt-1 text-sm font-bold sm:text-base">mhnamembers@gmail.com</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer className="bg-blue-950 px-4 py-6 text-blue-100 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-5 text-center md:flex-row md:text-left">
+      <footer className="bg-blue-950 px-4 py-5 text-slate-300 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center md:flex-row md:text-left">
           <div className="flex items-center gap-3">
-            <BirdBadge id="footer-logo" className="h-12 w-12" />
-            <span className="font-black text-white">Mockingbird Hill Neighborhood Association</span>
+            <BirdBadge id="footer-logo" className="h-9 w-9" />
+            <span className="text-sm font-extrabold text-white">
+              Mockingbird Hill Neighborhood Association
+            </span>
           </div>
-          <p className="text-sm">© 2026 MHNA. Building a stronger community, one neighbor at a time.</p>
+          <p className="text-xs text-blue-200/80">
+            © 2026 MHNA · District 8, San Antonio, TX · Building a stronger community, one neighbor at a time.
+          </p>
         </div>
       </footer>
+
+      <BackToTop />
     </main>
   );
 }
